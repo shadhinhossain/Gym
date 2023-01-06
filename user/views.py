@@ -2,8 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
-from .models import Contact,MembershipPlan,Trainer,Enrollment
-from django.http import HttpResponse
+from user.models import Contact,MembershipPlan,Trainer,Enrollment,Gallery,Attendance
 
 
 
@@ -17,7 +16,14 @@ def home(request):
 #==============profile view============================
 
 def profile(request):
-    return render(request, 'user/profile.html')
+    if not request.user.is_authenticated:
+        messages.warning(request, 'Please Login and Try Again')
+        return redirect('/login')
+    user=request.user
+    print(user)
+    posts=Enrollment.objects.filter(user=user)
+    context={"posts":posts}
+    return render(request, "user/profile.html",context)
 
 
 #=============signup view==========================
@@ -131,6 +137,15 @@ def enroll(request):
 
 
 
-#============
+#============Gallery==================
+
+def gallery(request):
+    posts=Gallery.objects.all()
+    context={"posts":posts}
+    return render(request, 'user/gallery.html',context)
 
 
+#================Attendance=====================
+
+def attendance(request):
+    return render(request, 'user/attendance.html')

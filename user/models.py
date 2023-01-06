@@ -19,6 +19,7 @@ class Contact(models.Model):
 
 class Enrollment(models.Model):
     FullName=models.CharField(max_length=25)
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
     Email=models.EmailField()
     Gender=models.CharField(max_length=25)
     PhoneNumber=models.CharField(max_length=11)
@@ -56,3 +57,22 @@ class MembershipPlan(models.Model):
     def __int__(self):
         return self.id
     
+
+class Gallery(models.Model):
+    title=models.CharField(max_length=100)
+    img=models.ImageField(upload_to='gallery')
+    timeStamp=models.DateTimeField(auto_now_add=True,blank=True)
+
+    def __int__(self):
+        return self.id
+
+
+class Attendance(models.Model):
+    Selectdate=models.DateTimeField(auto_now_add=True)
+    Login=models.CharField(max_length=200)
+    Logout=models.CharField(max_length=200)
+    Selectworkout=models.CharField(max_length=200)
+    Trained_By=models.CharField(max_length=200)
+
+    def __int__(self):
+        return self.id
